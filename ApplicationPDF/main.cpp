@@ -30,18 +30,20 @@ int main(int argc, const char* argv[])
 			curr.push_back(word);
 		}
 		
+		cout << "size: " << curr.size() << endl;
+		
 		string command = "php ";
 				
 		if (curr.size() == 17)
-			command += "basic.php";
-		else if (curr.size() == 21);
-			command += "basic_2";	
-		else if (curr.size() == 21);
-			command += "basic_3";
-		else if (curr.size() == 21);
-			command += "basic_4";
-		else if (curr.size() == 21);
-			command += "basic_5";
+			command += "createPDF.php";
+		else if (curr.size() == 21)
+			command += "createPDF_2";	
+		else if (curr.size() == 21)
+			command += "createPDF_3";
+		else if (curr.size() == 21)
+			command += "createPDF_4";
+		else if (curr.size() == 21)
+			command += "createPDF_5";
 		
 		for (int i = 0; i < curr.size(); ++i){
 			command += " ";
@@ -56,6 +58,8 @@ int main(int argc, const char* argv[])
 		command += " > Applicant_";
 		command += name;
 		command += ".pdf";
+		
+		//cout << "command: " << command << endl;
 		
 		system(command.c_str());
 	}
