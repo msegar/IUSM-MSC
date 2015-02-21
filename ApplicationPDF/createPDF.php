@@ -10,15 +10,19 @@ $current = $argv[5];
 $past = $argv[6];
 $undergrad = $argv[7];
 $major = $argv[8];
-$grad = $argv[9];
-$degree = $argv[10];
-$offices = $argv[11];
-$awards = $argv[12];
-$ec = $argv[13];
-$choice1 = $argv[14];
-$interests1 = $argv[15];
-$goals1 = $argv[16];
-$previous1 = $argv[17];
+$gradq = $argv[9];
+$grad = $argv[10];
+$degree = $argv[11];
+$offices = $argv[12];
+$awards = $argv[13];
+$ec = $argv[14];
+$choice = $argv[15];
+$interests = $argv[16];
+$goals = $argv[17];
+$previous = $argv[18];
+$again = $argv[19];
+$request = $argv[20];
+$skype = $argv[21];
 
 $pdf = new FPDF();
 $pdf->AddPage();
@@ -121,15 +125,15 @@ $pdf->Ln(4);
 #-------------------------------------------------------------------------------------------------------
 # Applicant's Choice
 $pdf->SetFont('Arial','B',14);
-$pdf->Cell(50, 5,'Applicant\'s Choice:');
+$pdf->Cell(30, 5,'Committee:');
 $pdf->SetFont('Arial','',14);
-$pdf->Cell(50,5,$choice1,0,1);
+$pdf->Cell(50,5,$choice,0,1);
 $pdf->Ln(3);
 $pdf->SetFont('Arial','B',12);
 $pdf->MultiCell(0,4,'The nature and extent of the applicant\'s interest in the position they listed as their choice.');
 $pdf->Ln(2);
 $pdf->SetFont('Arial','',11);
-$pdf->MultiCell(0,4,$interests1);
+$pdf->MultiCell(0,4,$interests);
 
 $pdf->Ln(4);
 #---------------------------------------------
@@ -138,7 +142,7 @@ $pdf->SetFont('Arial','B',12);
 $pdf->MultiCell(0,4,'The specific goals and ideas that this applicant has for the position they listed as their choice.');
 $pdf->Ln(2);
 $pdf->SetFont('Arial','',11);
-$pdf->MultiCell(0,4,$goals1);
+$pdf->MultiCell(0,4,$goals);
 
 $pdf->Ln(4);
 #---------------------------------------------
@@ -147,7 +151,30 @@ $pdf->SetFont('Arial','B',12);
 $pdf->MultiCell(0,4,'Whether the applicant has been a member of the committee');
 $pdf->Ln(2);
 $pdf->SetFont('Arial','',11);
-$pdf->MultiCell(0,4,$previous1);
+$pdf->MultiCell(0,4,$previous);
+
+$pdf->Ln(4);
+$x = $pdf->GetX();
+$y = $pdf->GetY();
+$pdf->Line($x, $y, $x+190, $y);
+$pdf->Ln(4);
+
+#---------------------------------------------
+# phone
+$pdf->SetFont('Arial','B',12);
+$pdf->MultiCell(0,4,'Does the applicant request a phone interview?');
+$pdf->Ln(2);
+$pdf->SetFont('Arial','',11);
+$pdf->MultiCell(0,4,$request);
+
+$pdf->Ln(4);
+#---------------------------------------------
+# skype
+$pdf->SetFont('Arial','B',12);
+$pdf->MultiCell(0,4,'Skype username:');
+$pdf->Ln(2);
+$pdf->SetFont('Arial','',11);
+$pdf->MultiCell(0,4,$skype);
 
 $pdf->Output();
 ?>
