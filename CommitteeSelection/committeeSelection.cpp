@@ -38,7 +38,7 @@ bool compareStart(const weight &a, const weight &b){
 	return false; 
 }
 
-double getApplicantPref(string a, string c){
+double getApplicantPref(string a, string c, int penalty){
 	double pref = 10.0; // **** ARBITRARY VALUE - MAY WANT TO MAKE A VARIABLE
 	int i = 0;
 	while (i < applicants.size()){
@@ -51,7 +51,7 @@ double getApplicantPref(string a, string c){
 	
 	for (int j = 0; j < ap.choices.size(); ++j){
 		if (ap.choices[j].compare(c) == 0){
-			if (j <= 1)
+			if (j <= (penalty - 1)) // example, if allow 2 committees before penalty, p=1
 				pref = ((j+1) * 1.0);
 			else
 				pref = ((j+1) * 1.0) + 1.0;
@@ -76,7 +76,7 @@ double getCommitteePref(int i){
 	return pref;
 }
 
-void algorithm(){
+void algorithm(int penalty, bool verbose){
 	for (int i = 0; i < committees.size(); ++i){
 		committee c = committees[i];
 		vector<weight> weights;
@@ -85,7 +85,7 @@ void algorithm(){
 		
 		for (int j = 0; j < c.choices.size(); ++j){
 			weight w;
-			applicantPref = getApplicantPref(c.choices[j], c.name);
+			applicantPref = getApplicantPref(c.choices[j], c.name, penalty);
 			w.applicantName = c.choices[j];
 			w.weight = applicantPref;
 			committeePref = getCommitteePref(j);
@@ -104,13 +104,24 @@ void algorithm(){
 		cout << "\n--- " << c.name << " ---" << endl;
 		cout << "quota = " << quota << ", applicantSize = " << applicantSize << endl;
 		if (quota < applicantSize){
-			for (int j = 0; j < quota; ++j)
-				cout << weights[j].applicantName << endl;
+			for (int j = 0; j < quota; ++j){
+				cout << weights[j].applicantName;
+				if (verbose)
+					cout << " - " << weights[j].weight;
+				cout << endl;
+			} 
 			cout << "------------" << endl;
-			cout << "alternate: " << weights[quota].applicantName << endl;
+			cout << "alternate: " << weights[quota].applicantName;
+			if (verbose)
+				cout << " - " << weights[quota].weight;
+			cout << endl;
 		} else {
-			for (int j = 0; j < applicantSize; ++j)
-				cout << weights[j].applicantName << endl;
+			for (int j = 0; j < applicantSize; ++j){
+				cout << weights[j].applicantName;
+				if (verbose)
+					cout << " - " << weights[j].weight;
+				cout << endl;
+			}
 			int diff = quota - applicantSize;
 			for (int j = 0; j < diff; ++j)
 				cout << "N/A" << endl;
@@ -123,15 +134,23 @@ void algorithm(){
 
 int main(int argc, const char* argv[])
 {
-	if (argc < 3){
-		cout << "Usage: [exe] [committee csv] [applicant csv]" << endl;
+	if (argc < 5){
+		cout << "Usage: [exe] [committee csv] [applicant csv] [number before penalty (1/2)] [verbose (true/false)]" << endl;
 		exit(1);
 	}
+	
+	int penalty = atoi(argv[3]);
+	cout << "penalty: " << penalty << endl;
+	
+	bool verbose = false;
+	string v = argv[4];
+	if (v.compare("true") == 0)
+		verbose = true;
 	
 	readInCommittees(argv);
 	readInApplicants(argv);
 	
-	algorithm();
+	algorithm(penalty, verbose);
 }
 
 void readInCommittees(const char* argv[]){
